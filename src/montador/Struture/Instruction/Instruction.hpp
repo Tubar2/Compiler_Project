@@ -2,8 +2,8 @@
 // Created by Ricardo Santos on 13/07/21.
 //
 
-#ifndef COMPILER_TYPES_HPP
-#define COMPILER_TYPES_HPP
+#ifndef COMPILER_INSTRUCTION_HPP
+#define COMPILER_INSTRUCTION_HPP
 
 #include <vector>
 
@@ -29,4 +29,4 @@ typedef struct Instruction {
     inline bool isHeader() const { return (operation == "begin" || operation == "extern" || operation == "public" || operation == "end") ;}
 } Instruction;
 
-#endif //COMPILER_TYPES_HPP
+#endif //COMPILER_INSTRUCTION_HPP

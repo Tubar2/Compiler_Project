@@ -9,4 +9,4 @@ labl_2: const 5
 
 section .text
     add labl_1
-    end
+    .end
