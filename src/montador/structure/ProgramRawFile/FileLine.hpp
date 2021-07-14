@@ -9,8 +9,7 @@
 
 typedef struct FileLine {
     std::vector<std::string> tokens;
-    int line;
-    bool has_end = false;
+    int line_number;
 } ProgramLine;
 
 #endif //COMPILER_FILELINE_HPP

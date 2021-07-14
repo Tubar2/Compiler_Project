@@ -2,7 +2,8 @@
 #include <vector>
 
 #include "utils/utils.hpp"
-#include "Struture/ProgramRawFile/ProgramRawFile.hpp"
+#include "structure/ProgramRawFile/ProgramRawFile.hpp"
+#include "first_pass/first_pass.h"
 
 
 int main(int argc, char *argv[]) {
@@ -19,12 +20,18 @@ int main(int argc, char *argv[]) {
     }
 
     // Read each file and store it in memory
-    std::vector<ProgramRawFile *> rawModule;
-    rawModule.reserve(filenames.size());
+    std::vector<ProgramRawFile *> rawModules;
+    rawModules.reserve(filenames.size());
     for (auto & filename : filenames) {
-        rawModule.push_back(readRawIntoModule("/Users/ricardosantos/Developer/C++/Compiler/src/montador/resource/test/" + filename +  ".asm"));
+        rawModules.push_back(readRawIntoModule("/Users/ricardosantos/Developer/C++/Compiler/src/montador/resource/test/" + filename +  ".asm"));
     }
 
+    // Process each module with the first pass algorithm
+    std::vector<Module> modules;
+    modules.reserve(rawModules.size());
+    for (auto module : rawModules){
+        modules.push_back(firstPass(module));
+    }
     std::cout << "End Program" << std::endl;
     return 0;
 }

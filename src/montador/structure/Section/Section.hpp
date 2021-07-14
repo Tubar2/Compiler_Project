@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "../ProgramRawFile/FileLine.hpp"
+
 typedef struct Section {
     std::vector<FileLine> lines;
 } Section;

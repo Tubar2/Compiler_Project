@@ -4,9 +4,32 @@ project(Compiler)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Montador
-        src/montador/montador.cpp
-        src/montador/utils/utils.cpp
-        src/montador/Struture/Instruction/Instruction.hpp
-        src/montador/Struture/ProgramRawFile/FileLine.hpp src/montador/Struture/ProgramRawFile/ProgramRawFile.hpp src/montador/Struture/Section/Section.hpp)
+        # FIRST PASS
+        src/montador/first_pass/first_pass.cpp
+        src/montador/first_pass/first_pass.h
 
-#add_executable(Ligador src/Ligador/ligador.cpp)
+        # INSTRUCTION
+        src/montador/structure/Instruction/Instruction.hpp
+
+        # MODULE
+            src/montador/structure/Module/aux/aux.cpp
+            src/montador/structure/Module/aux/aux.h
+        src/montador/structure/Module/Module.cpp
+        src/montador/structure/Module/Module.h
+
+        # ProgramRawFile
+        src/montador/structure/ProgramRawFile/FileLine.hpp
+        src/montador/structure/ProgramRawFile/ProgramRawFile.hpp
+
+        # SECTION
+        src/montador/structure/Section/Section.hpp
+
+        # UTILS
+        src/montador/utils/utils.cpp
+        src/montador/utils/utils.hpp
+
+        # MONTADOR
+        src/montador/montador.cpp
+        src/data/data.cpp src/data/data.h)
+
+#add_executable(Ligador src/ligador/ligador.cpp)

@@ -8,7 +8,7 @@
 
 
 #include "utils.hpp"
-#include "../Struture/Section/Section.hpp"
+
 
 std::string removeExtension(const char * s){
     std::string str(s);
@@ -35,6 +35,7 @@ ProgramRawFile * readRawIntoModule(const std::string& filename) {
     // Header always comes first
     int status = 1;
     bool insertion;
+    bool  has_end = false;
     while (std::getline(file, line)) {
         insertion = true;
         FileLine fileLine {};
@@ -50,11 +51,11 @@ ProgramRawFile * readRawIntoModule(const std::string& filename) {
             if (token == ".data") {status = 2; insertion= false; break;}
             if (token == ".text") {status = 3; insertion= false; break;}
             // Check for ".end"
-            if (token == ".end") {fileLine.has_end = true; insertion= false; break;}
+            if (token == ".end") {has_end = true; insertion= false; break;}
 
             fileLine.tokens.push_back(token);
         }
-        fileLine.line = lineCounter++;
+        fileLine.line_number = lineCounter++;
         if (!fileLine.tokens.empty() && insertion){
             switch (status) {
                 case 1: // Insert in header
@@ -77,6 +78,7 @@ ProgramRawFile * readRawIntoModule(const std::string& filename) {
     rawFile->header = header;
     rawFile->data = data;
     rawFile->text = text;
+    rawFile->has_end = has_end;
 
     file.close();
     return rawFile;

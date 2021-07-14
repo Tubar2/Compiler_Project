@@ -5,8 +5,8 @@
 #ifndef COMPILER_UTILS_HPP
 #define COMPILER_UTILS_HPP
 
-#include "../Struture/Instruction/Instruction.hpp"
-#include "../Struture/ProgramRawFile/ProgramRawFile.hpp"
+#include "../structure/Instruction/Instruction.hpp"
+#include "../structure/ProgramRawFile/ProgramRawFile.hpp"
 
 std::string removeExtension(const char * s);
 
