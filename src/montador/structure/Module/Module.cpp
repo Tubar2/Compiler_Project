@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "aux/aux.h"
 #include "../../../data/data.h"
+#include "../Object_Code/Object_Code.h"
 
 //std::map<std::string, int> Module::definitionsTable {};
 
@@ -16,19 +17,20 @@ Module::Module(std::string filename) : filename(std::move(filename)) {}
 void Module::processHeader(Section & _header) {
     for (auto & line : _header.lines){
         auto instruction = toInstruction(line);
+        this->header_code.push_back(instruction);
         // 'begin' or 'extern'
         if (!instruction.label.empty()){
-            this->processHeaderLabel(instruction);
+            this->defineHeaderLabels(instruction);
         }
         // 'public'
         else if (!instruction.operation.empty()){
-            this->processHeaderOperation(instruction);
+            this->defineHeaderOperations(instruction);
         }
 
     }
 }
 
-void Module::processHeaderLabel(Instruction & instruction) {
+void Module::defineHeaderLabels(Instruction & instruction) {
     bool inMap = this->symbolsTable.find(instruction.label) != this->symbolsTable.end();
     if (!inMap) {
         // 'begin'
@@ -50,7 +52,7 @@ void Module::processHeaderLabel(Instruction & instruction) {
 
 }
 
-void Module::processHeaderOperation(Instruction &instruction) {
+void Module::defineHeaderOperations(Instruction &instruction) {
     bool isInstruction = Header_operation_set.find(instruction.operation) != Header_operation_set.end();
     if (isInstruction){
         if (instruction.operation == "public"){
@@ -74,14 +76,15 @@ void Module::processHeaderOperation(Instruction &instruction) {
 void Module::processData(Section &data, int posCounter) {
     for (auto & line : data.lines){
         auto instruction = toInstruction(line);
+        this->data_code.push_back(instruction);
         // Checks for label
-        this->processDataVariable(instruction, posCounter);
+        posCounter = this->defineDataVariables(instruction, posCounter);
     }
 
 
 }
 
-int Module::processDataVariable(Instruction &instruction, int posCounter) {
+int Module::defineDataVariables(Instruction &instruction, int posCounter) {
     if (!instruction.label.empty()){
         if (!instruction.operation.empty()){
             auto directive = Data_operation_set.find(instruction.operation);
@@ -101,25 +104,43 @@ int Module::processDataVariable(Instruction &instruction, int posCounter) {
     return posCounter;
 }
 
+Object_Code Module::processDataVariables(Instruction &instruction, int *posCounter) {
+    Object_Code obj_file {};
+    bool isInstruction = Data_operation_set.find(instruction.operation) != Text_operation_set.end();
+    if (!isInstruction){
+        // TODO: Erro
+        this->addError("Undefined instruction: " + instruction.operation, "", instruction.instructionLine);
+    } else {
+        *posCounter += Data_operation_set[instruction.operation].size;
+        if (instruction.operation == "space") {
+            obj_file.push_back(0);
+        } else if (instruction.operation == "const"){
+            obj_file.push_back(std::stoi(instruction.operands[0]));
+        }
+    }
+    return obj_file;
+}
+
 
 /* TEXT METHODS */
 int Module::processText(Section &text) {
     int posCounter = 0;
     for (auto & line : text.lines){
         auto instruction = toInstruction(line);
+        this->text_code.push_back(instruction);
         // Checks for label
-        this->processTextOperation(instruction, &posCounter);
+        this->defineTextOperations(instruction, &posCounter);
     }
     return posCounter;
 }
 
-void Module::processTextOperation(Instruction &instruction, int * posCounter) {
+void Module::defineTextOperations(Instruction &instruction, int * posCounter) {
     if (!instruction.label.empty()){
         bool isInSymbols = this->symbolsTable.find(instruction.label) != this->symbolsTable.end();
         if (!isInSymbols){
             this->insertLabelIntoSymbols(instruction.label, *posCounter, false);
         } else {
-            // TODO: Erro
+            // TODO: Erro, label redefinido
         }
     }
     if (!instruction.operation.empty()){
@@ -129,4 +150,28 @@ void Module::processTextOperation(Instruction &instruction, int * posCounter) {
             *posCounter += operation->second.size;
         }
     }
+}
+
+Object_Code Module::processTextVariables(Instruction &instruction, int *posCounter) {
+    Object_Code obj_file {};
+    if (!instruction.operation.empty()){
+        bool isInstruction = Text_operation_set.find(instruction.operation) != Text_operation_set.end();
+        if (!isInstruction && instruction.isEmpty()) {
+            // TODO: Erro
+            this->addError("Undefined instruction: " + instruction.operation, "", instruction.instructionLine);
+        } else {
+            *posCounter += Text_operation_set[instruction.operation].size;
+            obj_file.push_back(Text_operation_set[instruction.operation].opcode);
+            for (auto &operand : instruction.operands) {
+                obj_file.push_back(this->symbolsTable[operand].addr);
+            }
+        }
+    }
+    return obj_file;
+}
+
+
+/* ERROR METHODS */
+void Module::addError(const std::string & error, const std::string & error_type, int line) {
+    this->errorsList.emplace_back(error, error_type, line);
 }

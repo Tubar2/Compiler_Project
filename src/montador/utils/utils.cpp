@@ -83,3 +83,40 @@ ProgramRawFile * readRawIntoModule(const std::string& filename) {
     file.close();
     return rawFile;
 }
+
+bool checkForErrors(Module & module){
+    if (!module.errorsList.empty()){
+        std::sort(module.errorsList.begin(), module.errorsList.end());
+        for (const auto & error : module.errorsList){
+            std::cout << std::left;
+            std::cout << std::setfill(' ') << std::setw(21) << "Erro "+ error.error_type +": ";
+            std::cout << std::setfill(' ') << std::setw(13)<< "Linha: "+std::to_string(error.line) + " ";
+            std::cout << error.error << std::endl;
+        }
+        return true;
+    }
+    return false;
+}
+
+void writeToObjFile(std::vector<int> & obj_code, Module & module) {
+    std::ofstream out_file {module.header.name, std::ios::trunc};
+    if (!out_file){
+        std::cerr << "Error creating exit file " << module.header.name << std::endl;
+        exit(1);
+    } else {
+        out_file << "H: " << module.header.name << "\n";
+        out_file << "H: " << obj_code.size() << "\n";
+        out_file << "R: " <<  module.header.bit_map << "\n";
+        for (auto & use_case : module.usesTable){
+            out_file << "U: " << use_case.label << "," << use_case.addr << "\n";
+        }
+        for (auto & definedSymbol : module.definitionsTable){
+            out_file << "D: " << definedSymbol.first << "," << definedSymbol.second << "\n";
+        }
+        out_file << "T: ";
+        for (auto code : obj_code){
+            out_file << code << " ";
+        }
+    }
+    out_file.close();
+}

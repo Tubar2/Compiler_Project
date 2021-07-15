@@ -1,12 +1,13 @@
 mod: BEGIN
-bar: extern
+;bar: extern
 public foo
-public mod
+public fim
 
 section .data
 foo: space
 labl_2: const 5
 
 section .text
-    add labl_1
+    add labl_2
+fim:
     .end

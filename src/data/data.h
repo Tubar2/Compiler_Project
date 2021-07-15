@@ -13,6 +13,7 @@ typedef std::string Operation_Name;
 typedef struct Operation_Properties {
     int operands;
     int size;
+    int opcode;
 } Operation_Properties;
 
 // Maps 'operation name' to {operands, address}

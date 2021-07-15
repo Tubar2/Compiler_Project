@@ -4,6 +4,7 @@
 #include "utils/utils.hpp"
 #include "structure/ProgramRawFile/ProgramRawFile.hpp"
 #include "first_pass/first_pass.h"
+#include "second_pass/second_pass.h"
 
 
 int main(int argc, char *argv[]) {
@@ -25,6 +26,7 @@ int main(int argc, char *argv[]) {
     for (auto & filename : filenames) {
         rawModules.push_back(readRawIntoModule("/Users/ricardosantos/Developer/C++/Compiler/src/montador/resource/test/" + filename +  ".asm"));
     }
+    filenames.clear();
 
     // Process each module with the first pass algorithm
     std::vector<Module> modules;
@@ -32,6 +34,25 @@ int main(int argc, char *argv[]) {
     for (auto module : rawModules){
         modules.push_back(firstPass(module));
     }
+    rawModules.clear();
+
+    // Turn each module into it's object code
+    std::vector<Object_Code> codes;
+    codes.reserve(modules.size());
+    for (auto & module : modules){
+        codes.push_back(secondPass(module));
+    }
+
+    // Check for errors
+    for (auto & module : modules){
+        if (checkForErrors(module)) return 0;
+    }
+
+    // Write object code to file
+    for (int i =0;i<modules.size(); i++) {
+        writeToObjFile(codes[i], modules[i]);
+    }
+
     std::cout << "End Program" << std::endl;
     return 0;
 }

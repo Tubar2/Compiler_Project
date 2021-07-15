@@ -30,6 +30,6 @@ add_executable(Montador
 
         # MONTADOR
         src/montador/montador.cpp
-        src/data/data.cpp src/data/data.h)
+        src/data/data.cpp src/data/data.h src/montador/second_pass/second_pass.cpp src/montador/second_pass/second_pass.h src/montador/structure/Object_Code/Object_Code.h src/montador/structure/Module/module_aliases/module_aliases.h src/montador/structure/Module/Error/Error.cpp src/montador/structure/Module/Error/Error.h)
 
 #add_executable(Ligador src/ligador/ligador.cpp)

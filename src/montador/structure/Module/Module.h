@@ -9,32 +9,13 @@
 #include <string>
 #include <vector>
 #include <map>
+
+#include "module_aliases/module_aliases.h"
+#include "Error/Error.h"
 #include "../Section/Section.hpp"
 #include "../Instruction/Instruction.hpp"
+#include "../Object_Code/Object_Code.h"
 
-typedef struct Symbol_Use_Case {
-    std::string label;
-    int addr;
-} Symbol_Use_Case;
-
-// Estrutura auxilar para identificar se o símbolo é externo
-typedef struct Value {
-    int addr;
-    bool isExtern;
-} Value;
-
-// Error structure <name, type, occurrence line>
-typedef struct Error {
-    std::string error;
-    std::string error_type;
-    int line;
-    // Overloading o opeardo '<' para poder organizar a lista de erros por linha
-    bool operator< (const Error &err) const {return line < err.line ;}
-} Error;
-
-typedef struct Header {
-    std::string name;
-} Header;
 
 class Module {
 public:
@@ -62,18 +43,27 @@ public:
     explicit Module(std::string filename);
 
     /* HEADER METHODS */
+    Instruction_Set header_code;
     void processHeader(Section & _header);
-    void processHeaderLabel(Instruction & instruction);
-    void processHeaderOperation(Instruction & instruction);
+    void defineHeaderLabels(Instruction & instruction);
+    void defineHeaderOperations(Instruction & instruction);
+
 
     /* DATA METHODS */
+    Instruction_Set data_code;
     void processData(Section & data, int posCounter);
-    int processDataVariable(Instruction & instruction, int posCounter);
+    int defineDataVariables(Instruction & instruction, int posCounter);
+    Object_Code processDataVariables(Instruction & instruction, int *posCounter);
+
 
     /* TEXT METHODS */
+    Instruction_Set text_code;
     int processText(Section & text);
-    void processTextOperation(Instruction & instruction, int * posCounter);
+    void defineTextOperations(Instruction & instruction, int * posCounter);
+    Object_Code processTextVariables(Instruction & instruction, int *posCounter);
 
+    /* ERROR METHODS */
+    void addError(const std::string & error, const std::string & error_type, int line);
 
     // Auxiliary Methods
     inline void insertLabelIntoSymbols(const Label& label, int addr, bool isExtern){
