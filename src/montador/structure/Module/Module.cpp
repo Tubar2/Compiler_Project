@@ -104,17 +104,18 @@ int Module::defineDataVariables(Instruction &instruction, int posCounter) {
     return posCounter;
 }
 
-Object_Code Module::processDataVariables(Instruction &instruction, int *posCounter) {
+Object_Code Module::processDataVariables(Instruction &instruction, int posCounter) {
     Object_Code obj_file {};
     bool isInstruction = Data_operation_set.find(instruction.operation) != Text_operation_set.end();
     if (!isInstruction){
         // TODO: Erro
         this->addError("Undefined instruction: " + instruction.operation, "", instruction.instructionLine);
     } else {
-        *posCounter += Data_operation_set[instruction.operation].size;
         if (instruction.operation == "space") {
+            this->header.bit_map += "0";
             obj_file.push_back(0);
         } else if (instruction.operation == "const"){
+            this->header.bit_map += "0";
             obj_file.push_back(std::stoi(instruction.operands[0]));
         }
     }
@@ -152,7 +153,7 @@ void Module::defineTextOperations(Instruction &instruction, int * posCounter) {
     }
 }
 
-Object_Code Module::processTextVariables(Instruction &instruction, int *posCounter) {
+Object_Code Module::processTextVariables(Instruction &instruction, int posCounter) {
     Object_Code obj_file {};
     if (!instruction.operation.empty()){
         bool isInstruction = Text_operation_set.find(instruction.operation) != Text_operation_set.end();
@@ -160,9 +161,18 @@ Object_Code Module::processTextVariables(Instruction &instruction, int *posCount
             // TODO: Erro
             this->addError("Undefined instruction: " + instruction.operation, "", instruction.instructionLine);
         } else {
-            *posCounter += Text_operation_set[instruction.operation].size;
             obj_file.push_back(Text_operation_set[instruction.operation].opcode);
+            this->header.bit_map += "0";
             for (auto &operand : instruction.operands) {
+                if (this->symbolsTable[operand].isExtern){
+                    this->usesTable.push_back({
+                        operand,
+                        static_cast<int>(posCounter + obj_file.size())
+                    });
+                    this->header.bit_map += "0";
+                } else {
+                    this->header.bit_map += "1";
+                }
                 obj_file.push_back(this->symbolsTable[operand].addr);
             }
         }

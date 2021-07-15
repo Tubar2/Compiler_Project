@@ -1,3 +1,4 @@
 # IDE environment folders
 cmake-build-debug
 .idea
+*.obj

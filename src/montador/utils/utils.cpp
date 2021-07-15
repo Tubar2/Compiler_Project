@@ -47,6 +47,7 @@ ProgramRawFile * readRawIntoModule(const std::string& filename) {
             if (token[0] == ';') { break; }
             // Transform each token to loswer case
             std::transform(token.begin(), token.end(), token.begin(), ::tolower);
+            token.erase(std::remove(token.begin(), token.end(), ','), token.end());
             // Check for section
             if (token == ".data") {status = 2; insertion= false; break;}
             if (token == ".text") {status = 3; insertion= false; break;}
@@ -99,7 +100,7 @@ bool checkForErrors(Module & module){
 }
 
 void writeToObjFile(std::vector<int> & obj_code, Module & module) {
-    std::ofstream out_file {module.header.name, std::ios::trunc};
+    std::ofstream out_file {"/Users/ricardosantos/Developer/C++/Compiler/src/montador/resource/object/"+module.header.name+".obj", std::ios::trunc};
     if (!out_file){
         std::cerr << "Error creating exit file " << module.header.name << std::endl;
         exit(1);

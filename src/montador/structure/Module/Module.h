@@ -53,14 +53,14 @@ public:
     Instruction_Set data_code;
     void processData(Section & data, int posCounter);
     int defineDataVariables(Instruction & instruction, int posCounter);
-    Object_Code processDataVariables(Instruction & instruction, int *posCounter);
+    Object_Code processDataVariables(Instruction & instruction, int posCounter);
 
 
     /* TEXT METHODS */
     Instruction_Set text_code;
     int processText(Section & text);
     void defineTextOperations(Instruction & instruction, int * posCounter);
-    Object_Code processTextVariables(Instruction & instruction, int *posCounter);
+    Object_Code processTextVariables(Instruction & instruction, int posCounter);
 
     /* ERROR METHODS */
     void addError(const std::string & error, const std::string & error_type, int line);
