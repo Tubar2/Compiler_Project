@@ -57,10 +57,10 @@ void Module::defineHeaderOperations(Instruction &instruction) {
     if (isInstruction){
         if (instruction.operation == "public"){
             if (instruction.operands.size() == 1){
-                this->defineLabel(instruction.operands[0], 0);
+                this->defineLabel(instruction.operands[0], -1);
                 bool inSymbolTable = this->symbolsTable.find(instruction.operands[0]) != this->symbolsTable.end();
-                if (inSymbolTable && this->labelIsExtern(instruction.operands[0])){
-                    // TODO: Erro símbolo externo redefinido como publico
+                if (!inSymbolTable){
+                    this->insertLabelIntoSymbols(instruction.label, -1, false);
                 }
             } else {
                 // TODO: Erro quadntidade de operandos
