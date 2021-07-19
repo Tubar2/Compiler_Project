@@ -1,5 +1,5 @@
 //
-// Created by Ricardo Santos on 13/07/21.
+// Created by Ricardo Santos
 //
 
 #include "Module.h"
@@ -58,10 +58,10 @@ void Module::defineHeaderOperations(Instruction &instruction) {
         if (instruction.operation == "public"){
             if (instruction.operands.size() == 1){
                 this->defineLabel(instruction.operands[0], -1);
-                bool inSymbolTable = this->symbolsTable.find(instruction.operands[0]) != this->symbolsTable.end();
-                if (!inSymbolTable){
-                    this->insertLabelIntoSymbols(instruction.label, -1, false);
-                }
+//                bool inSymbolTable = this->symbolsTable.find(instruction.operands[0]) != this->symbolsTable.end();
+//                if (!inSymbolTable){
+//                    this->insertLabelIntoSymbols(instruction.label, -1, false);
+//                }
             } else {
                 // TODO: Erro quadntidade de operandos
             }
@@ -97,7 +97,12 @@ int Module::defineDataVariables(Instruction &instruction, int posCounter) {
                     // TODO: Erro
 
                 }
-                posCounter += directive->second.size;
+                if (instruction.operation == "space" && !instruction.operands.empty()) {
+                    posCounter += std::stoi(instruction.operands[0]);
+                }else {
+                    posCounter += directive->second.size;
+                }
+
             }
         }
     }
@@ -112,8 +117,17 @@ Object_Code Module::processDataVariables(Instruction &instruction, int posCounte
         this->addError("Undefined instruction: " + instruction.operation, "", instruction.instructionLine);
     } else {
         if (instruction.operation == "space") {
-            this->header.bit_map += "0";
-            obj_file.push_back(0);
+            if (!instruction.operands.empty()) {
+                int num = std::stoi(instruction.operands[0]);
+                for (int i = 0; i < num; ++i) {
+                    this->header.bit_map += "0";
+                    obj_file.push_back(0);
+                }
+            }
+            else {
+                this->header.bit_map += "0";
+                obj_file.push_back(0);
+            }
         } else if (instruction.operation == "const"){
             this->header.bit_map += "0";
             obj_file.push_back(std::stoi(instruction.operands[0]));

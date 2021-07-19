@@ -1,5 +1,5 @@
 //
-// Created by Ricardo Santos on 13/07/21.
+// Created by Ricardo Santos
 //
 
 #ifndef COMPILER_MODULE_H
@@ -10,7 +10,7 @@
 #include <vector>
 #include <map>
 
-#include "module_aliases/module_aliases.h"
+#include "alias/alias.h"
 #include "Error/Error.h"
 #include "../Section/Section.hpp"
 #include "../Instruction/Instruction.hpp"

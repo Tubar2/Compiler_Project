@@ -1,0 +1,20 @@
+MOD_B: BEGIN
+A: EXTERN
+b: EXTERN
+L1: EXTERN
+PUBLIC R
+PUBLIC MOD_B
+
+section .text
+    LOAD A
+    MUL B
+    STORE R
+    DIV DOIS
+    STORE R
+    JMP L1
+
+section .data
+R: SPACE 2
+DOIS: CONST 2
+
+    .END

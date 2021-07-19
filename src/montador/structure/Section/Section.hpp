@@ -1,5 +1,5 @@
 //
-// Created by Ricardo Santos on 13/07/21.
+// Created by Ricardo Santos
 //
 
 #ifndef COMPILER_SECTION_HPP

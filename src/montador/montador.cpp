@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     std::vector<ProgramRawFile *> rawModules;
     rawModules.reserve(filenames.size());
     for (auto & filename : filenames) {
-        rawModules.push_back(readRawIntoModule("/Users/ricardosantos/Developer/C++/Compiler/src/montador/resource/test/" + filename +  ".asm"));
+        rawModules.push_back(readRawIntoModule("/Users/ricardosantos/Developer/C++/Compiler/resource/test/" + filename +  ".asm"));
     }
     filenames.clear();
 
@@ -53,6 +53,6 @@ int main(int argc, char *argv[]) {
         writeToObjFile(codes[i], modules[i]);
     }
 
-    std::cout << "End Program" << std::endl;
+    std::cout << "Files Assembled" << std::endl;
     return 0;
 }

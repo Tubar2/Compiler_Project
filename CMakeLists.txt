@@ -3,33 +3,75 @@ project(Compiler)
 
 set(CMAKE_CXX_STANDARD 14)
 
+# MONTADOR
 add_executable(Montador
         # FIRST PASS
         src/montador/first_pass/first_pass.cpp
         src/montador/first_pass/first_pass.h
 
-        # INSTRUCTION
-        src/montador/structure/Instruction/Instruction.hpp
+        # SECOND PASS
+        src/montador/second_pass/second_pass.cpp
+        src/montador/second_pass/second_pass.h
 
-        # MODULE
-            src/montador/structure/Module/aux/aux.cpp
-            src/montador/structure/Module/aux/aux.h
-        src/montador/structure/Module/Module.cpp
-        src/montador/structure/Module/Module.h
+        # STRUCTURE
+            # INSTRUCTION
+            src/montador/structure/Instruction/Instruction.hpp
 
-        # ProgramRawFile
-        src/montador/structure/ProgramRawFile/FileLine.hpp
-        src/montador/structure/ProgramRawFile/ProgramRawFile.hpp
+            # MODULE
+            src/montador/structure/Module/Module.cpp
+            src/montador/structure/Module/Module.h
+                # AUX
+                src/montador/structure/Module/aux/aux.cpp
+                src/montador/structure/Module/aux/aux.h
+                # ERROR
+                src/montador/structure/Module/Error/Error.cpp
+                src/montador/structure/Module/Error/Error.h
+                # ALIAS
+                src/montador/structure/Module/alias/alias.h
 
-        # SECTION
-        src/montador/structure/Section/Section.hpp
+            # OBJECT_CODE
+            src/montador/structure/Object_Code/Object_Code.h
+
+            # PROGRAM_RAW_FILE
+            src/montador/structure/ProgramRawFile/FileLine.hpp
+            src/montador/structure/ProgramRawFile/ProgramRawFile.hpp
+
+            # SECTION
+            src/montador/structure/Section/Section.hpp
 
         # UTILS
         src/montador/utils/utils.cpp
         src/montador/utils/utils.hpp
 
+        # DATA
+        src/data/data.cpp
+        src/data/data.h
+
         # MONTADOR
         src/montador/montador.cpp
-        src/data/data.cpp src/data/data.h src/montador/second_pass/second_pass.cpp src/montador/second_pass/second_pass.h src/montador/structure/Object_Code/Object_Code.h src/montador/structure/Module/module_aliases/module_aliases.h src/montador/structure/Module/Error/Error.cpp src/montador/structure/Module/Error/Error.h)
+        )
 
-#add_executable(Ligador src/ligador/ligador.cpp)
+# Ligador
+add_executable(Ligador
+
+        src/ligador/structure/Global_Module/Global_Module.cpp
+        src/ligador/structure/Global_Module/Global_Module.h
+
+        src/ligador/utils/utils.cpp
+        src/ligador/utils/utils.h
+
+        src/ligador/structure/Module/Module.cpp
+        src/ligador/structure/Module/Module.h
+
+        src/ligador/structure/Module/Module.cpp
+        src/ligador/structure/Module/Module.h
+
+        src/ligador/structure/Module/alias/alias.h
+
+        src/ligador/ligador.cpp
+        )
+
+add_executable(Simulador
+
+        src/simulador/simulador.cpp
+        )

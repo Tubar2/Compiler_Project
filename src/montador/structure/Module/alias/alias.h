@@ -1,9 +1,9 @@
 //
-// Created by Ricardo Santos on 14/07/21.
+// Created by Ricardo Santos
 //
 
-#ifndef COMPILER_MODULE_ALIASES_H
-#define COMPILER_MODULE_ALIASES_H
+#ifndef COMPILER_ALIAS_H
+#define COMPILER_ALIAS_H
 
 #include <string>
 #include <vector>
@@ -29,4 +29,4 @@ typedef struct Header {
 
 typedef std::vector<Instruction> Instruction_Set;
 
-#endif //COMPILER_MODULE_ALIASES_H
+#endif //COMPILER_ALIAS_H

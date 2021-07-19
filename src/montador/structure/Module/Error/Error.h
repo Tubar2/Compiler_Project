@@ -1,5 +1,5 @@
 //
-// Created by Ricardo Santos on 14/07/21.
+// Created by Ricardo Santos
 //
 
 #ifndef COMPILER_ERROR_H

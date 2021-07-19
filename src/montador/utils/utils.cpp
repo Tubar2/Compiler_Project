@@ -1,5 +1,5 @@
 //
-// Created by Ricardo Santos on 13/07/21.
+// Created by Ricardo Santos
 //
 
 #include <iostream>
@@ -100,7 +100,7 @@ bool checkForErrors(Module & module){
 }
 
 void writeToObjFile(std::vector<int> & obj_code, Module & module) {
-    std::ofstream out_file {"/Users/ricardosantos/Developer/C++/Compiler/src/montador/resource/object/"+module.header.name+".obj", std::ios::trunc};
+    std::ofstream out_file {"/Users/ricardosantos/Developer/C++/Compiler/resource/object/"+module.header.name+".obj", std::ios::trunc};
     if (!out_file){
         std::cerr << "Error creating exit file " << module.header.name << std::endl;
         exit(1);
@@ -109,10 +109,10 @@ void writeToObjFile(std::vector<int> & obj_code, Module & module) {
         out_file << "H: " << obj_code.size() << "\n";
         out_file << "R: " <<  module.header.bit_map << "\n";
         for (auto & use_case : module.usesTable){
-            out_file << "U: " << use_case.label << "," << use_case.addr << "\n";
+            out_file << "U: " << use_case.label << " " << use_case.addr << "\n";
         }
         for (auto & definedSymbol : module.definitionsTable){
-            out_file << "D: " << definedSymbol.first << "," << definedSymbol.second << "\n";
+            out_file << "D: " << definedSymbol.first << " " << definedSymbol.second << "\n";
         }
         out_file << "T: ";
         for (auto code : obj_code){

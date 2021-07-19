@@ -1,0 +1,19 @@
+MOD_A: BEGIN
+R: EXTERN
+MOD_B: EXTERN
+PUBLIC A
+PUBLIC B
+PUBLIC L1
+
+section .text
+    INPUT A
+    INPUT B
+    JMP MOD_B
+L1: OUTPUT R
+    STOP
+
+section .data
+A: SPACE 1
+B: SPACE 1
+
+    .END
