@@ -1,4 +1,12 @@
 # IDE environment folders
 cmake-build-debug
 .idea
+
+# Resources
+/resource/link
+/resource/object
+/resource/out
+
+# obj and out
 *.obj
+*.out

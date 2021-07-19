@@ -74,4 +74,6 @@ add_executable(Ligador
 add_executable(Simulador
 
         src/simulador/simulador.cpp
-        )
+
+        src/simulador/Program/Program.cpp
+        src/simulador/Program/Program.h)
