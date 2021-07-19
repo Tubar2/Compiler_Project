@@ -19,3 +19,9 @@ void createObjectProgram(const std::vector<int> &objCode, std::string filename) 
         out_file << "\n";
     }
 }
+
+std::string removeExtension(const char * s){
+    std::string str(s);
+    str = str.substr(0, str.find_last_of('.'));
+    return str;
+}

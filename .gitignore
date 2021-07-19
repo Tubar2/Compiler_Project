@@ -2,6 +2,8 @@
 cmake-build-debug
 .idea
 
+build
+
 # Resources
 /resource/link
 /resource/object
@@ -10,3 +12,8 @@ cmake-build-debug
 # obj and out
 *.obj
 *.out
+
+# Out files
+Ligador
+Montador
+Simulador

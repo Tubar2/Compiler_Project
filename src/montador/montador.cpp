@@ -6,6 +6,7 @@
 #include "first_pass/first_pass.h"
 #include "second_pass/second_pass.h"
 
+#define IN_CLION false
 
 int main(int argc, char *argv[]) {
     // Checks for correct number of arguments
@@ -24,7 +25,7 @@ int main(int argc, char *argv[]) {
     std::vector<ProgramRawFile *> rawModules;
     rawModules.reserve(filenames.size());
     for (auto & filename : filenames) {
-        rawModules.push_back(readRawIntoModule("/Users/ricardosantos/Developer/C++/Compiler/resource/test/" + filename +  ".asm"));
+        rawModules.push_back(readRawIntoModule("resource/test/" + filename +  ".asm"));
     }
     filenames.clear();
 

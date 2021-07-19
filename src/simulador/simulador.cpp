@@ -19,7 +19,9 @@ int main(int argc, char *argv[]) {
     std::string filename = argv[1];
 
     // Abrindo arquivo objeto para leitura
-    std::ifstream file {"/Users/ricardosantos/Developer/C++/Compiler/resource/link/" + filename + ".obj"};
+
+//    std::string prefix{};
+    std::ifstream file {"resource/link/" + filename + ".obj"};
     if (!file) {
         // Arquivo não encotrado
         std::cerr << "Erro ao abrir arquivo" << std::endl;
@@ -37,7 +39,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    Program program {memory, "/Users/ricardosantos/Developer/C++/Compiler/resource/out/"+filename+".out" };
+    Program program {memory, "resource/out/" + filename + ".out" };
     program.run();
 
     std::cout << "End of Simulation" << std::endl;

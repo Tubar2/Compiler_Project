@@ -100,7 +100,7 @@ bool checkForErrors(Module & module){
 }
 
 void writeToObjFile(std::vector<int> & obj_code, Module & module) {
-    std::ofstream out_file {"/Users/ricardosantos/Developer/C++/Compiler/resource/object/"+module.header.name+".obj", std::ios::trunc};
+    std::ofstream out_file {"resource/object/"+module.header.name+".obj", std::ios::trunc};
     if (!out_file){
         std::cerr << "Error creating exit file " << module.header.name << std::endl;
         exit(1);

@@ -3,7 +3,8 @@ project(Compiler)
 
 set(CMAKE_CXX_STANDARD 14)
 
-# MONTADOR
+
+### MONATDOR ###
 add_executable(Montador
         # FIRST PASS
         src/montador/first_pass/first_pass.cpp
@@ -50,8 +51,11 @@ add_executable(Montador
         # MONTADOR
         src/montador/montador.cpp
         )
+# Defines output directory
+set_target_properties( Montador PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
 
-# Ligador
+
+### LIGADOR ###
 add_executable(Ligador
 
         src/ligador/structure/Global_Module/Global_Module.cpp
@@ -71,9 +75,16 @@ add_executable(Ligador
         src/ligador/ligador.cpp
         )
 
+# Defines output directory
+set_target_properties( Ligador PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
+
+### SIMULADOR ###
 add_executable(Simulador
 
         src/simulador/simulador.cpp
 
         src/simulador/Program/Program.cpp
-        src/simulador/Program/Program.h)
+        src/simulador/Program/Program.h
+        )
+# Defines output directory
+set_target_properties( Simulador PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
